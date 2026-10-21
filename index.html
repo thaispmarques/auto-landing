@@ -737,8 +737,8 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
 .acc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:24px;align-items:start}
 @media (max-width:900px){.acc{grid-template-columns:minmax(0,1fr)}}
 .pv{--pfs:1;--pc-ok:#4F8F7A;--pc-warn:#C79A4A;--pc-crit:#C4605A;--pc-info:#7D8E9F;--pt:#ECEAE5;--pm:#9BA8B8;--pl:#1C2638;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:16px;color:#ECEAE5}
-.pv-h{margin:0;color:var(--muted);font-size:15px}
-.pv-ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.pv-cfg{display:grid;gap:18px;padding-bottom:28px;border-bottom:1px solid var(--pl)}.pv-test{display:grid;gap:14px;padding-top:12px}.pv-sel{width:100%;box-sizing:border-box;min-height:44px;padding:0 14px;border-radius:10px;border:1px solid #6B7C93;background:#0E1522;color:#ECEAE5;font:500 16px var(--f-body);cursor:pointer}.pv-h{margin:0;color:var(--muted);font-size:15px}
+.pv-ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px 24px}
 .pv-grp{display:grid;gap:8px;border:0;margin:0;padding:0;min-width:0}
 .pv-lbl{font:600 13px var(--f-body);color:#C9D3E0;padding:0}
 .pv-step{display:flex;align-items:center;gap:10px}
@@ -1048,11 +1048,11 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
     <div class="acc" id="acc" hidden>
       <div class="card3"><span class="ic"><i data-lucide="accessibility"></i></span><h3>O que é a WCAG</h3><p>A WCAG (Web Content Accessibility Guidelines) é o padrão internacional, criado pelo W3C, que define como tornar sites utilizáveis por pessoas com deficiência visual, auditiva, motora ou cognitiva.</p><p>Este site foi desenvolvido para atender à WCAG 2.2, nível AA, e passou em testes automatizados de acessibilidade sem violações.</p></div>
       <div class="pv" id="pv" role="group" aria-label="Prévia interativa do menu de acessibilidade">
-        <p class="pv-h">Experimente: os ajustes abaixo valem só para a prévia. No site, use o botão no canto inferior esquerdo.</p>
+        <div class="pv-cfg">
         <div class="pv-ctl">
           <div class="pv-grp" role="group" aria-labelledby="pv-l1"><span class="pv-lbl" id="pv-l1">Tamanho da fonte</span><div class="pv-step"><button type="button" id="pv-fm" aria-label="Diminuir o tamanho da fonte da prévia">−</button><output id="pv-fv" aria-live="polite">16</output><button type="button" id="pv-fp" aria-label="Aumentar o tamanho da fonte da prévia">+</button></div></div>
           <div class="pv-grp" role="group" aria-labelledby="pv-l2"><span class="pv-lbl" id="pv-l2">Ponteiro do mouse</span><div class="pv-step"><button type="button" id="pv-pm" aria-label="Diminuir o ponteiro da prévia">−</button><output id="pv-pv" aria-live="polite">1×</output><button type="button" id="pv-pp" aria-label="Aumentar o ponteiro da prévia">+</button></div></div>
-          <fieldset class="pv-grp"><legend class="pv-lbl">Cor do ponteiro e do guia</legend><div class="pv-cores" id="pv-cores"></div></fieldset>
+          <div class="pv-grp"><label class="pv-lbl" for="pv-cor">Cor do ponteiro e do guia</label><select class="pv-sel" id="pv-cor"><option value="preto">Preto</option><option value="azul">Azul</option><option value="roxo">Roxo</option><option value="amarelo">Amarelo</option><option value="rosa">Rosa</option></select></div>
         </div>
         <div class="pv-sws">
           <button class="pv-sw" type="button" role="switch" aria-checked="false" data-k="daltonismo"><span>Modo daltonismo</span><i></i></button>
@@ -1060,6 +1060,8 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
           <button class="pv-sw" type="button" role="switch" aria-checked="false" data-k="dislexia"><span>Modo dislexia</span><i></i></button>
           <button class="pv-sw" type="button" role="switch" aria-checked="false" data-k="guia"><span>Guia de leitura</span><i></i></button>
         </div>
+        </div>
+        <div class="pv-test">
         <p class="pv-teste" id="pv-teste">Teste aqui</p>
         <div class="pv-stage" id="pv-stage" aria-labelledby="pv-teste">
           <div class="pv-guia" id="pv-guia" aria-hidden="true" hidden></div>
@@ -1072,6 +1074,7 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
             <li class="pv-chip c-ok"><b>Concluído</b> Petição inicial protocolada</li>
           </ul>
           <a class="pv-link" href="#acessibilidade" onclick="return false">Abrir caso</a>
+        </div>
         </div>
       </div>
     </div>
@@ -1471,10 +1474,7 @@ icons();
   var st=document.createElement("style");document.head.appendChild(st);
   function seta(t,c){var px=Math.round(24*t),svg="<svg xmlns='http://www.w3.org/2000/svg' width='"+px+"' height='"+px+"' viewBox='0 0 24 24'><path d='M3 2 V19 L7.4 14.9 L10.6 22 L13.9 20.6 L10.7 13.6 L16.8 13.6 Z' fill='"+C[c][1]+"' stroke='"+C[c][2]+"' stroke-width='1.4' stroke-linejoin='round'/></svg>";
     return 'url("data:image/svg+xml,'+encodeURIComponent(svg)+'") '+Math.round(3*px/24)+" "+Math.round(2*px/24)+", auto"}
-  var box=$("pv-cores");
-  Object.keys(C).forEach(function(c){var l=document.createElement("label");
-    l.innerHTML='<input type="radio" name="pv-cor" value="'+c+'"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 2 V19 L7.4 14.9 L10.6 22 L13.9 20.6 L10.7 13.6 L16.8 13.6 Z" fill="'+C[c][1]+'" stroke="'+(c==="preto"?"#ffffff":C[c][2])+'" stroke-width="1.4" stroke-linejoin="round"/></svg>'+C[c][0];
-    l.querySelector("input").addEventListener("change",function(){P.cor=c;ap()});box.appendChild(l)});
+  var sel=$("pv-cor");sel.addEventListener("change",function(){P.cor=sel.value;ap()});
   function ap(){
     var t=1+P.pont*0.5;
     pv.style.setProperty("--pfs",P.fonte/16);
@@ -1484,7 +1484,7 @@ icons();
     $("pv-fv").textContent=P.fonte;$("pv-pv").textContent=String(t).replace(".",",")+"×";
     $("pv-fm").disabled=P.fonte<=12;$("pv-fp").disabled=P.fonte>=24;$("pv-pm").disabled=P.pont<=0;$("pv-pp").disabled=P.pont>=8;
     pv.querySelectorAll(".pv-sw").forEach(function(b){b.setAttribute("aria-checked",P[b.dataset.k]?"true":"false")});
-    box.querySelectorAll("input").forEach(function(i){i.checked=i.value===P.cor});
+    sel.value=P.cor;
     guia.hidden=!P.guia;
   }
   $("pv-fm").onclick=function(){P.fonte=Math.max(12,P.fonte-1);ap()};$("pv-fp").onclick=function(){P.fonte=Math.min(24,P.fonte+1);ap()};
