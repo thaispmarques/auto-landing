@@ -653,7 +653,7 @@ section.s-a,section.s-b,.band.s-a,.band.s-b{padding-block:var(--gut)!important;m
 .ind-form input[type=text],.ind-form input[type=tel],.ind-form input[type=email]{width:100%;box-sizing:border-box;padding:14px 16px;border-radius:12px;border:1px solid var(--line);background:var(--bg);color:var(--fg);font:400 calc(16px*var(--fs,1))/1.2 var(--f-body)}
 .ind-form input:focus-visible{outline:2px solid #F2B994;outline-offset:2px}
 .ind-form input[aria-invalid=true]{border-color:var(--crit)}
-.ind-err{color:var(--crit);font-size:calc(13px*var(--fs,1));min-height:0}
+.ind-fe{color:var(--crit);font-size:13px;font-weight:400;min-height:0}.ind-fe:empty{display:none}.ind-err:empty{display:none}.ind-form .ind-ck{margin-bottom:-14px}.ind-form button[type=submit]:disabled{opacity:.45;cursor:not-allowed}.ind-err{color:var(--crit);font-size:calc(13px*var(--fs,1));min-height:0}
 .ind-ck{display:flex!important;grid-template-columns:none;gap:12px;align-items:flex-start;font-weight:400!important;color:var(--muted)!important;font-size:calc(14px*var(--fs,1))!important;line-height:1.45!important}
 .ind-ck input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:#F2B994}
 .ind-ok{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,3vw,36px)}.ind-ok[hidden]{display:none}.ind-ok h3{font:500 calc(1.6rem) var(--f-display);margin:0 0 12px}.ind-ok p{color:var(--muted);margin:0}.ind-note{font-size:calc(13px*var(--fs,1));color:var(--muted)}
@@ -993,25 +993,24 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
         <fieldset>
           <legend>Quem está indicando</legend>
           <div class="ind-row">
-            <label>Seu nome<input type="text" name="ind_nome" autocomplete="name" required></label>
-            <label>Seu contato (WhatsApp ou e-mail)<input type="text" name="ind_contato" autocomplete="off" inputmode="text" required></label>
+            <label>Seu nome<input type="text" name="ind_nome" autocomplete="name" maxlength="80" required aria-describedby="e-ind_nome"><span class="ind-fe" id="e-ind_nome"></span></label>
+            <label>Seu telefone (com DDD)<input type="tel" name="ind_contato" inputmode="tel" autocomplete="tel-national" placeholder="(00) 00000-0000" maxlength="15" required aria-describedby="e-ind_contato"><span class="ind-fe" id="e-ind_contato"></span></label>
           </div>
         </fieldset>
         <fieldset>
           <legend>Quem está sendo indicado</legend>
           <div class="ind-row">
-            <label>Nome<input type="text" name="alvo_nome" autocomplete="off" required></label>
-            <label>Contato (WhatsApp ou e-mail)<input type="text" name="alvo_contato" autocomplete="off" required></label>
+            <label>Nome<input type="text" name="alvo_nome" autocomplete="off" maxlength="80" required aria-describedby="e-alvo_nome"><span class="ind-fe" id="e-alvo_nome"></span></label>
+            <label>Telefone (com DDD)<input type="tel" name="alvo_contato" inputmode="tel" autocomplete="off" placeholder="(00) 00000-0000" maxlength="15" required aria-describedby="e-alvo_contato"><span class="ind-fe" id="e-alvo_contato"></span></label>
           </div>
           <div class="ind-row">
-            <label>Nome da empresa<input type="text" name="alvo_empresa" autocomplete="off" required></label>
-            <label>CNPJ<input type="text" name="alvo_cnpj" inputmode="numeric" placeholder="00.000.000/0000-00" maxlength="18" autocomplete="off" required></label>
+            <label>Nome da empresa<input type="text" name="alvo_empresa" autocomplete="off" maxlength="100" required aria-describedby="e-alvo_empresa"><span class="ind-fe" id="e-alvo_empresa"></span></label>
+            <label>CNPJ<input type="text" name="alvo_cnpj" inputmode="numeric" placeholder="00.000.000/0000-00" maxlength="18" autocomplete="off" required aria-describedby="e-alvo_cnpj"><span class="ind-fe" id="e-alvo_cnpj"></span></label>
           </div>
         </fieldset>
         <label class="ind-ck"><input type="checkbox" name="ok" required><span>Avisei a pessoa indicada que passaria o contato dela à Auto, e concordo em usar estes dados só para esta indicação.</span></label>
         <p class="ind-err" id="ind-err" role="alert" aria-live="assertive"></p>
-        <div><button class="pill solid" type="submit">Enviar indicação</button></div>
-        <p class="ind-note">Retornamos o contato da indicação em breve.</p>
+        <div><button class="pill solid" type="submit" disabled>Enviar indicação</button></div>
       </form>
     </div>
   </section>
@@ -1335,6 +1334,19 @@ icons();
   var f=document.getElementById("ind-form"); if(!f) return;
   var ENDPOINT="https://formsubmit.co/ajax/thaispmarques1@gmail.com",CC="fidelix.bianca@gmail.com,luizasferoli@gmail.com";
   var err=document.getElementById("ind-err"), cn=f.elements.alvo_cnpj;
+  var TEL=["ind_contato","alvo_contato"], NOMES=["ind_nome","alvo_nome"];
+  function foneMask(v){var d=v.replace(/\D/g,"").slice(0,11);
+    if(d.length>10)return d.replace(/(\d{2})(\d{5})(\d{0,4})/,"($1) $2-$3");
+    if(d.length>6)return d.replace(/(\d{2})(\d{4})(\d{0,4})/,"($1) $2-$3");
+    if(d.length>2)return d.replace(/(\d{2})(\d{0,5})/,"($1) $2");
+    return d.length?"("+d:""}
+  function foneOk(v){var d=v.replace(/\D/g,"");
+    if(d.length<10||d.length>11)return false; var ddd=+d.slice(0,2); if(ddd<11||ddd>99||/^(\d)\1+$/.test(d.slice(2)))return false;
+    return d.length===11?d[2]==="9":/[2-5]/.test(d[2])}
+  TEL.forEach(function(n){f.elements[n].addEventListener("input",function(e){var el=e.target;el.value=foneMask(el.value)})});
+  // nomes: só letras, espaço, apóstrofo, hífen e ponto
+  NOMES.forEach(function(n){f.elements[n].addEventListener("input",function(e){var el=e.target;el.value=el.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ'’.\- ]/g,"").replace(/\s{2,}/g," ").replace(/^\s+/,"")})});
+  f.elements.alvo_empresa.addEventListener("input",function(e){var el=e.target;el.value=el.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ0-9&.,'’\/\-() ]/g,"").replace(/\s{2,}/g," ").replace(/^\s+/,"")});
   cn.addEventListener("input",function(){
     var d=cn.value.replace(/\D/g,"").slice(0,14),o=d;
     if(d.length>12)o=d.replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{0,2})/,"$1.$2.$3/$4-$5");
@@ -1348,13 +1360,23 @@ icons();
     function dv(n){var w=n===12?[5,4,3,2,9,8,7,6,5,4,3,2]:[6,5,4,3,2,9,8,7,6,5,4,3,2],s=0;for(var i=0;i<n;i++)s+=+v[i]*w[i];var r=s%11;return r<2?0:11-r}
     return dv(12)===+v[12]&&dv(13)===+v[13];
   }
+  function nomeOk(v){v=v.trim();var p=v.split(/\s+/).filter(function(x){return x.replace(/[^A-Za-zÀ-ÿ]/g,"").length>=2});
+    return p.length>=2&&/^[A-Za-zÀ-ÖØ-öø-ÿ'’.\- ]+$/.test(v)&&!/(.)\1{3,}/i.test(v)}
+  function empOk(v){v=v.trim();return v.length>=2&&/[A-Za-zÀ-ÿ0-9]/.test(v)&&!/(.)\1{4,}/i.test(v)}
+  var MSG={ind_nome:"Informe nome e sobrenome, só com letras.",alvo_nome:"Informe nome e sobrenome, só com letras.",ind_contato:"Telefone inválido. Use DDD e número, como (11) 91234-5678.",alvo_contato:"Telefone inválido. Use DDD e número, como (11) 91234-5678.",alvo_empresa:"Informe o nome da empresa.",alvo_cnpj:"CNPJ inválido. Confira os 14 números."};
+  var REG={ind_nome:nomeOk,alvo_nome:nomeOk,ind_contato:foneOk,alvo_contato:foneOk,alvo_empresa:empOk,alvo_cnpj:cnpjOk};
+  var envia=f.querySelector("button[type=submit]");
+  function trava(){envia.disabled=!f.elements.ok.checked}
+  f.elements.ok.addEventListener("change",function(){trava();if(f.elements.ok.checked)err.textContent=""});
+  trava();
+  function valida(n){var el=f.elements[n],ok=REG[n](el.value),e=document.getElementById("e-"+n);
+    el.setAttribute("aria-invalid",ok?"false":"true");e.textContent=ok?"":(el.value.trim()?MSG[n]:"Campo obrigatório.");return ok}
+  Object.keys(REG).forEach(function(n){f.elements[n].addEventListener("blur",function(){if(f.elements[n].value)valida(n)});
+    f.elements[n].addEventListener("input",function(){if(f.elements[n].getAttribute("aria-invalid")==="true")valida(n)})});
   f.addEventListener("submit",function(e){
     e.preventDefault(); err.textContent="";
-    var bad=null; ["ind_nome","ind_contato","alvo_nome","alvo_contato","alvo_empresa","alvo_cnpj"].forEach(function(n){
-      var el=f.elements[n],ok=el.value.trim().length>1; if(n==="alvo_cnpj") ok=cnpjOk(el.value);
-      el.setAttribute("aria-invalid",ok?"false":"true"); if(!ok&&!bad) bad=el;
-    });
-    if(bad){ err.textContent=bad.name==="alvo_cnpj"?"Confira o CNPJ: ele parece inválido.":"Preencha todos os campos."; bad.focus(); return; }
+    var bad=null; Object.keys(REG).forEach(function(n){if(!valida(n)&&!bad)bad=f.elements[n]});
+    if(bad){ err.textContent="Corrija os campos destacados."; bad.focus(); return; }
     if(!f.elements.ok.checked){ err.textContent="Marque a confirmação para continuar."; f.elements.ok.focus(); return; }
     var v=function(n){return f.elements[n].value.trim()};
     var btn=f.querySelector("button[type=submit]"); btn.disabled=true; btn.textContent="Enviando...";
@@ -1364,7 +1386,7 @@ icons();
       "Indicado (nome)":v("alvo_nome"),"Indicado (contato)":v("alvo_contato"),"Empresa":v("alvo_empresa"),"CNPJ":v("alvo_cnpj")})})
     .then(function(r){return r.json().then(function(j){if(!r.ok||j.success==="false"||j.success===false)throw 0})})
     .then(function(){var ok=document.getElementById("ind-ok");f.hidden=true;ok.hidden=false;ok.focus()})
-    .catch(function(){btn.disabled=false;btn.textContent="Enviar indicação";err.textContent="Não foi possível enviar agora. Tente de novo ou fale conosco pelo WhatsApp."});
+    .catch(function(){trava();btn.textContent="Enviar indicação";err.textContent="Não foi possível enviar agora. Tente de novo ou fale conosco pelo WhatsApp."});
   });
 })();
 </script>
