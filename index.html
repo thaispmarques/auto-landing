@@ -645,7 +645,20 @@ section.s-a,section.s-b,.band.s-a,.band.s-b{padding-block:var(--gut)!important;m
 .ind{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(32px,5vw,72px);align-items:start}
 .ind-prize{display:inline-flex;align-items:baseline;gap:10px;margin-top:8px;font:500 clamp(2.4rem,5vw,3.6rem)/1 var(--f-display);color:#F2B994}
 .ind-prize small{font:600 calc(14px*var(--fs,1))/1.3 var(--f-body);color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
-.ind-form{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,3vw,36px);display:grid;gap:28px}
+.ind-card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,3vw,36px)}
+.ind-card[hidden]{display:none}
+.ind-form{display:grid;gap:28px;margin-top:24px}.ind-form[hidden]{display:none}
+.ind-toggle{display:flex;align-items:center;justify-content:space-between;gap:16px;width:100%;min-height:44px;padding:0;background:transparent;border:0;color:var(--fg);cursor:pointer;text-align:left}
+.ind-toggle .ind-ttl{font:500 calc(1.5rem) var(--f-display)}
+.ind-toggle svg{flex:none;width:28px;height:28px;margin-left:auto}
+.ind-toggle .v{transition:opacity .2s}
+.ind-toggle[aria-expanded="true"] .v{opacity:0}
+.ind-toggle[aria-expanded="true"]{justify-content:flex-end}
+.ind-toggle[aria-expanded="true"] .ind-ttl{display:none}
+.ind-toggle:focus-visible{outline:2px solid #F2B994;outline-offset:4px;border-radius:8px}
+.ind-card:has(.ind-toggle[aria-expanded="true"]) .ind-form{margin-top:4px}
+.ind-row{align-items:start}
+
 .ind-form fieldset{border:0;margin:0;padding:0;display:grid;gap:16px;min-width:0}
 .ind-form legend{font:600 calc(13px*var(--fs,1))/1 var(--f-body);letter-spacing:.12em;text-transform:uppercase;color:var(--steel-ink);padding:0;margin-bottom:16px}
 .ind-row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
@@ -995,7 +1008,9 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
         <p>Indique e, se o cliente fechar negócio, você ganha a bonificação.</p>
       </div>
       <div class="ind-ok" id="ind-ok" role="status" tabindex="-1" hidden><h3>Indicação enviada!</h3><p>Obrigado! Recebemos sua indicação e entraremos em contato com a pessoa indicada. Se o cliente fechar negócio, você receberá a bonificação.</p></div>
-      <form class="ind-form" id="ind-form" novalidate aria-label="Formulário de indicação">
+      <div class="ind-card" id="ind-card">
+        <button class="ind-toggle" type="button" id="ind-toggle" aria-expanded="false" aria-controls="ind-form"><span class="ind-ttl">Indique aqui</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M5 12h14"/><path class="v" d="M12 5v14"/></svg></button>
+        <form class="ind-form" hidden id="ind-form" novalidate aria-label="Formulário de indicação">
         <fieldset>
           <legend>Quem está indicando</legend>
           <div class="ind-row">
@@ -1018,6 +1033,7 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
         <p class="ind-err" id="ind-err" role="alert" aria-live="assertive"></p>
         <div><button class="pill solid" type="submit" disabled>Enviar indicação</button></div>
       </form>
+      </div>
     </div>
   </section>
 </div>
@@ -1392,7 +1408,7 @@ icons();
       "Quem indica (nome)":v("ind_nome"),"Quem indica (contato)":v("ind_contato"),
       "Indicado (nome)":v("alvo_nome"),"Indicado (contato)":v("alvo_contato"),"Empresa":v("alvo_empresa"),"CNPJ":v("alvo_cnpj")})})
     .then(function(r){return r.json().then(function(j){if(!r.ok||j.success==="false"||j.success===false)throw 0})})
-    .then(function(){var ok=document.getElementById("ind-ok");f.hidden=true;ok.hidden=false;ok.focus()})
+    .then(function(){var ok=document.getElementById("ind-ok");document.getElementById("ind-card").hidden=true;ok.hidden=false;ok.focus()})
     .catch(function(){trava();btn.textContent="Enviar indicação";err.textContent="Não foi possível enviar agora. Tente de novo ou fale conosco pelo WhatsApp."});
   });
 })();
@@ -1484,6 +1500,11 @@ icons();
 <script>
 (function(){var b=document.getElementById("acc-more"),a=document.getElementById("acc");if(!b||!a)return;
 b.addEventListener("click",function(){var o=a.hidden;a.hidden=!o;b.setAttribute("aria-expanded",o?"true":"false");b.querySelector("span").textContent=o?"Mostrar menos":"Saiba mais"});})();
+</script>
+<script>
+(function(){var t=document.getElementById("ind-toggle"),f=document.getElementById("ind-form");if(!t||!f)return;
+t.addEventListener("click",function(){var o=f.hidden;f.hidden=!o;t.setAttribute("aria-expanded",o?"true":"false");
+if(o){t.setAttribute("aria-label","Recolher o formulário de indicação");var i=f.querySelector("input");if(i)i.focus()}else t.removeAttribute("aria-label")});})();
 </script>
 </body>
 </html>
