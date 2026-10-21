@@ -656,7 +656,7 @@ section.s-a,section.s-b,.band.s-a,.band.s-b{padding-block:var(--gut)!important;m
 .ind-err{color:var(--crit);font-size:calc(13px*var(--fs,1));min-height:0}
 .ind-ck{display:flex!important;grid-template-columns:none;gap:12px;align-items:flex-start;font-weight:400!important;color:var(--muted)!important;font-size:calc(14px*var(--fs,1))!important;line-height:1.45!important}
 .ind-ck input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:#F2B994}
-.ind-note{font-size:calc(13px*var(--fs,1));color:var(--muted)}
+.ind-ok{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(22px,3vw,36px)}.ind-ok[hidden]{display:none}.ind-ok h3{font:500 calc(1.6rem) var(--f-display);margin:0 0 12px}.ind-ok p{color:var(--muted);margin:0}.ind-note{font-size:calc(13px*var(--fs,1));color:var(--muted)}
 @media (max-width:900px){.ind{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:560px){.ind-row{grid-template-columns:minmax(0,1fr)}}
 </style>
@@ -941,6 +941,7 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
         <h2>Sua indicação pode valer R$&nbsp;500!</h2>
         <p>Indique e, se o cliente fechar negócio, você ganha a bonificação.</p>
       </div>
+      <div class="ind-ok" id="ind-ok" role="status" tabindex="-1" hidden><h3>Indicação enviada!</h3><p>Obrigado! Recebemos sua indicação e entraremos em contato com a pessoa indicada. Se o cliente fechar negócio, você receberá a bonificação.</p></div>
       <form class="ind-form" id="ind-form" novalidate aria-label="Formulário de indicação">
         <fieldset>
           <legend>Quem está indicando</legend>
@@ -962,8 +963,8 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
         </fieldset>
         <label class="ind-ck"><input type="checkbox" name="ok" required><span>Avisei a pessoa indicada que passaria o contato dela à Auto, e concordo em usar estes dados só para esta indicação.</span></label>
         <p class="ind-err" id="ind-err" role="alert" aria-live="assertive"></p>
-        <div><button class="pill solid" type="submit">Enviar indicação pelo WhatsApp</button></div>
-        <p class="ind-note">Ao enviar, o WhatsApp abre com a indicação pronta para você confirmar o envio.</p>
+        <div><button class="pill solid" type="submit">Enviar indicação</button></div>
+        <p class="ind-note">Retornamos o contato da indicação em breve.</p>
       </form>
     </div>
   </section>
@@ -1261,6 +1262,7 @@ icons();
 <script>
 (function(){
   var f=document.getElementById("ind-form"); if(!f) return;
+  var ENDPOINT="https://formsubmit.co/ajax/thaispmarques1@gmail.com",CC="fidelix.bianca@gmail.com,luizasferoli@gmail.com";
   var err=document.getElementById("ind-err"), cn=f.elements.alvo_cnpj;
   cn.addEventListener("input",function(){
     var d=cn.value.replace(/\D/g,"").slice(0,14),o=d;
@@ -1284,8 +1286,14 @@ icons();
     if(bad){ err.textContent=bad.name==="alvo_cnpj"?"Confira o CNPJ: ele parece inválido.":"Preencha todos os campos."; bad.focus(); return; }
     if(!f.elements.ok.checked){ err.textContent="Marque a confirmação para continuar."; f.elements.ok.focus(); return; }
     var v=function(n){return f.elements[n].value.trim()};
-    var msg="Olá! Quero fazer uma indicação para a Auto.\n\nQuem indica: "+v("ind_nome")+" ("+v("ind_contato")+")\n\nIndicado: "+v("alvo_nome")+" ("+v("alvo_contato")+")\nEmpresa: "+v("alvo_empresa")+"\nCNPJ: "+v("alvo_cnpj");
-    window.open("https://wa.me/"+WHATSAPP_NUMBER+"?text="+encodeURIComponent(msg),"_blank","noopener");
+    var btn=f.querySelector("button[type=submit]"); btn.disabled=true; btn.textContent="Enviando...";
+    fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({
+      _subject:"Nova indicação pelo site: "+v("alvo_empresa"),_template:"table",_captcha:"false",_cc:CC,_honey:"",
+      "Quem indica (nome)":v("ind_nome"),"Quem indica (contato)":v("ind_contato"),
+      "Indicado (nome)":v("alvo_nome"),"Indicado (contato)":v("alvo_contato"),"Empresa":v("alvo_empresa"),"CNPJ":v("alvo_cnpj")})})
+    .then(function(r){return r.json().then(function(j){if(!r.ok||j.success==="false"||j.success===false)throw 0})})
+    .then(function(){var ok=document.getElementById("ind-ok");f.hidden=true;ok.hidden=false;ok.focus()})
+    .catch(function(){btn.disabled=false;btn.textContent="Enviar indicação";err.textContent="Não foi possível enviar agora. Tente de novo ou fale conosco pelo WhatsApp."});
   });
 })();
 </script>
