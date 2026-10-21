@@ -712,6 +712,53 @@ try{var _a=JSON.parse(localStorage.getItem("auto-a11y")||"{}"),_h=document.docum
 if(_a.fonte&&_a.fonte!==16){_h.style.setProperty("--fs",_a.fonte/16);_h.setAttribute("data-fonte",_a.fonte)}
 if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAttribute("data-dislexia","ligado");if(_a.daltonismo)_h.setAttribute("data-daltonismo","ligado")}catch(e){}
 </script>
+<style>
+.acc{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.5fr);gap:24px;align-items:start}
+@media (max-width:900px){.acc{grid-template-columns:minmax(0,1fr)}}
+.pv{--pfs:1;--pc-ok:#4F8F7A;--pc-warn:#C79A4A;--pc-crit:#C4605A;--pc-info:#7D8E9F;--pt:#ECEAE5;--pm:#9BA8B8;--pl:#1C2638;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:22px;display:grid;gap:16px;color:#ECEAE5}
+.pv-h{margin:0;color:var(--muted);font-size:15px}
+.pv-ctl{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.pv-grp{display:grid;gap:8px;border:0;margin:0;padding:0;min-width:0}
+.pv-lbl{font:600 13px var(--f-body);color:#C9D3E0;padding:0}
+.pv-step{display:flex;align-items:center;gap:10px}
+.pv-step output{min-width:3em;text-align:center;font:600 16px var(--f-body)}
+.pv-step button,.pv-reset{font:600 14px var(--f-body);color:#ECEAE5;background:transparent;border:1px solid #6B7C93;border-radius:10px;min-height:44px;min-width:44px;cursor:pointer;padding:0 14px}
+.pv-step button:hover:not(:disabled),.pv-reset:hover{background:#1C2638}
+.pv-step button:disabled{opacity:.4;cursor:not-allowed}
+.pv-cores{display:flex;flex-wrap:wrap;gap:8px}
+.pv-cores label{display:inline-flex;align-items:center;gap:6px;min-height:44px;padding:0 10px;border:1px solid #6B7C93;border-radius:10px;font:500 14px var(--f-body);cursor:pointer}
+.pv-cores input{position:absolute;opacity:0;width:1px;height:1px}
+.pv-cores label:has(input:checked){background:#F4F2EE;color:#03060E;border-color:#F4F2EE}
+.pv-cores label:has(input:focus-visible){outline:3px solid #9CC0EE;outline-offset:2px}
+.pv-sws{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.pv-sw{display:flex;justify-content:space-between;align-items:center;gap:12px;min-height:44px;background:transparent;border:1px solid #6B7C93;border-radius:10px;padding:0 14px;color:#ECEAE5;font:600 14px var(--f-body);cursor:pointer;text-align:left}
+.pv-sw i{flex:none;width:42px;height:24px;border-radius:12px;background:#33435C;position:relative;border:1px solid #6B7C93}
+.pv-sw i::after{content:"";position:absolute;top:2px;left:2px;width:18px;height:18px;border-radius:50%;background:#ECEAE5;transition:transform .15s}
+.pv-sw[aria-checked="true"] i{background:#F2B994;border-color:#F2B994}
+.pv-sw[aria-checked="true"] i::after{transform:translateX(18px);background:#03060E}
+.pv :focus-visible{outline:3px solid #9CC0EE;outline-offset:2px}
+.pv-stage{position:relative;overflow:hidden;background:#070B14;border:1px solid var(--pl);border-radius:14px;padding:22px;display:grid;gap:12px;color:var(--pt)}
+.pv-stage *{font-family:var(--pf,var(--f-body))}
+.pv-t{margin:0;font-size:calc(22px*var(--pfs));font-weight:500;font-family:var(--pf,var(--f-display))}
+.pv-p{margin:0;font-size:calc(15px*var(--pfs));line-height:1.5;color:var(--pm)}
+.pv-chips{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.pv-chip{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;padding:10px 12px;border-radius:10px;border-left:6px solid var(--cc);background:color-mix(in srgb,var(--cc) 16%,#070B14);font-size:calc(14px*var(--pfs));color:var(--pt)}
+.pv-chip b{font-weight:600}
+.c-crit{--cc:var(--pc-crit)}.c-warn{--cc:var(--pc-warn)}.c-info{--cc:var(--pc-info)}.c-ok{--cc:var(--pc-ok)}
+.pv-link{justify-self:start;color:#F2B994;font-size:calc(15px*var(--pfs));font-weight:600;text-decoration:underline;text-underline-offset:3px}
+.pv-guia{position:absolute;left:0;top:0;width:100%;height:2px;background:var(--pg,#000);box-shadow:0 0 0 1px var(--pgc,#fff);pointer-events:none;z-index:2;opacity:0}
+.pv[data-dislexia]{--pf:"OpenDyslexic",system-ui,sans-serif}
+.pv[data-dislexia] .pv-stage *{line-height:1.5!important;overflow-wrap:anywhere}
+.pv[data-daltonismo]{--pc-ok:#009E73;--pc-warn:#E69F00;--pc-crit:#D55E00;--pc-info:#56B4E9}
+.pv[data-daltonismo] .c-crit{background-image:repeating-linear-gradient(45deg,transparent 0 5px,rgba(255,255,255,.18) 5px 6px)}
+.pv[data-daltonismo] .c-warn{background-image:repeating-linear-gradient(0deg,transparent 0 4px,rgba(255,255,255,.18) 4px 5px)}
+.pv[data-daltonismo] .c-info{background-image:radial-gradient(rgba(255,255,255,.25) 1px,transparent 1.4px);background-size:6px 6px}
+.pv[data-daltonismo] .c-ok{background-image:repeating-linear-gradient(90deg,transparent 0 5px,rgba(255,255,255,.18) 5px 6px)}
+.pv[data-contraste]{--pt:#FFFFFF;--pm:#E6E9EE;--pl:#8FA0B5}
+.pv[data-contraste] .pv-stage{font-weight:600}
+.pv[data-contraste] .pv-link{color:#FFD9B8}
+.pv[data-contraste] .pv-chip{background-color:#000}
+</style>
 </head>
 <body>
 <div lang="pt-BR">
@@ -975,12 +1022,36 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
     <div class="sec-head">
       <p class="eyebrow"><i class="stripe"></i>Acessibilidade</p>
       <h2>Um site para todas as pessoas</h2>
-      <p>Este site foi desenvolvido para atender à WCAG 2.2, nível AA, e passou em testes automatizados de acessibilidade sem violações.</p>
     </div>
-    <div class="cards3">
-      <div class="card3"><span class="ic"><i data-lucide="accessibility"></i></span><h3>O que é a WCAG</h3><p>A WCAG (Web Content Accessibility Guidelines) é o padrão internacional, criado pelo W3C, que define como tornar sites utilizáveis por pessoas com deficiência visual, auditiva, motora ou cognitiva. Ela se baseia em quatro princípios: o conteúdo deve ser perceptível, operável, compreensível e robusto. Os níveis de conformidade são A, AA e AAA, e o AA é o referencial mais usado.</p></div>
-      <div class="card3"><span class="ic"><i data-lucide="sliders-horizontal"></i></span><h3>Painel de acessibilidade</h3><p>Use o botão no canto inferior esquerdo para ajustar o site ao seu jeito: tamanho da fonte (de 12 a 24), tamanho e cor do ponteiro do mouse, modo daltonismo, alto contraste (nível AAA), modo amigável para dislexia (fonte OpenDyslexic) e guia de leitura. Sua escolha fica salva neste aparelho.</p></div>
-      <div class="card3"><span class="ic"><i data-lucide="keyboard"></i></span><h3>Teclado e movimento</h3><p>Link para pular direto ao conteúdo, foco visível ao navegar com a tecla Tab, botão para pausar as animações e respeito à preferência "reduzir movimento" do seu aparelho.</p></div>
+    <div class="acc">
+      <div class="card3"><span class="ic"><i data-lucide="accessibility"></i></span><h3>O que é a WCAG</h3><p>A WCAG (Web Content Accessibility Guidelines) é o padrão internacional, criado pelo W3C, que define como tornar sites utilizáveis por pessoas com deficiência visual, auditiva, motora ou cognitiva.</p><p>Este site foi desenvolvido para atender à WCAG 2.2, nível AA, e passou em testes automatizados de acessibilidade sem violações.</p></div>
+      <div class="pv" id="pv" role="group" aria-label="Prévia interativa do menu de acessibilidade">
+        <p class="pv-h">Experimente: os ajustes abaixo valem só para a prévia. No site, use o botão no canto inferior esquerdo.</p>
+        <div class="pv-ctl">
+          <div class="pv-grp" role="group" aria-labelledby="pv-l1"><span class="pv-lbl" id="pv-l1">Tamanho da fonte</span><div class="pv-step"><button type="button" id="pv-fm" aria-label="Diminuir o tamanho da fonte da prévia">−</button><output id="pv-fv" aria-live="polite">16</output><button type="button" id="pv-fp" aria-label="Aumentar o tamanho da fonte da prévia">+</button></div></div>
+          <div class="pv-grp" role="group" aria-labelledby="pv-l2"><span class="pv-lbl" id="pv-l2">Ponteiro do mouse</span><div class="pv-step"><button type="button" id="pv-pm" aria-label="Diminuir o ponteiro da prévia">−</button><output id="pv-pv" aria-live="polite">1×</output><button type="button" id="pv-pp" aria-label="Aumentar o ponteiro da prévia">+</button></div></div>
+          <fieldset class="pv-grp"><legend class="pv-lbl">Cor do ponteiro e do guia</legend><div class="pv-cores" id="pv-cores"></div></fieldset>
+        </div>
+        <div class="pv-sws">
+          <button class="pv-sw" type="button" role="switch" aria-checked="false" data-k="daltonismo"><span>Modo daltonismo</span><i></i></button>
+          <button class="pv-sw" type="button" role="switch" aria-checked="false" data-k="contraste"><span>Alto contraste</span><i></i></button>
+          <button class="pv-sw" type="button" role="switch" aria-checked="false" data-k="dislexia"><span>Modo dislexia</span><i></i></button>
+          <button class="pv-sw" type="button" role="switch" aria-checked="false" data-k="guia"><span>Guia de leitura</span><i></i></button>
+        </div>
+        <div class="pv-stage" id="pv-stage">
+          <div class="pv-guia" id="pv-guia" aria-hidden="true" hidden></div>
+          <p class="pv-t">Prazos da semana</p>
+          <p class="pv-p">Três processos têm vencimento nos próximos dias. Confira o status de cada um e abra o caso para ver os detalhes.</p>
+          <ul class="pv-chips">
+            <li class="pv-chip c-crit"><b>Prazo fatal</b> Contestação, quinta-feira</li>
+            <li class="pv-chip c-warn"><b>Atenção</b> Recurso, sexta-feira</li>
+            <li class="pv-chip c-info"><b>Perícia</b> Marcada para dia 28</li>
+            <li class="pv-chip c-ok"><b>Concluído</b> Petição inicial protocolada</li>
+          </ul>
+          <a class="pv-link" href="#acessibilidade" onclick="return false">Abrir caso</a>
+        </div>
+        <button class="pv-reset" type="button" id="pv-reset">Restaurar a prévia</button>
+      </div>
     </div>
   </section>
 </div>
@@ -1344,6 +1415,42 @@ icons();
   function pinta(){q=0;g.style.transform="translateY("+y+"px)";g.style.opacity="1"}
   window.addEventListener("pointermove",function(e){if(!P.guia)return;y=e.clientY;if(rm.matches)pinta();else if(!q)q=requestAnimationFrame(pinta)},{passive:true});
   aplicar();
+})();
+</script>
+<script>
+(function(){
+  var pv=document.getElementById("pv"); if(!pv) return;
+  var $=function(i){return document.getElementById(i)}, stage=$("pv-stage"), guia=$("pv-guia");
+  var PAD={fonte:16,pont:0,cor:"preto",daltonismo:false,contraste:false,dislexia:false,guia:false},P=Object.assign({},PAD);
+  var C={preto:["Preto","#000000","#ffffff"],azul:["Azul","#1d4ed8","#ffffff"],roxo:["Roxo","#7e22ce","#ffffff"],amarelo:["Amarelo","#ffd400","#000000"],rosa:["Rosa","#ec4899","#000000"]};
+  var st=document.createElement("style");document.head.appendChild(st);
+  function seta(t,c){var px=Math.round(24*t),svg="<svg xmlns='http://www.w3.org/2000/svg' width='"+px+"' height='"+px+"' viewBox='0 0 24 24'><path d='M3 2 V19 L7.4 14.9 L10.6 22 L13.9 20.6 L10.7 13.6 L16.8 13.6 Z' fill='"+C[c][1]+"' stroke='"+C[c][2]+"' stroke-width='1.4' stroke-linejoin='round'/></svg>";
+    return 'url("data:image/svg+xml,'+encodeURIComponent(svg)+'") '+Math.round(3*px/24)+" "+Math.round(2*px/24)+", auto"}
+  var box=$("pv-cores");
+  Object.keys(C).forEach(function(c){var l=document.createElement("label");
+    l.innerHTML='<input type="radio" name="pv-cor" value="'+c+'"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 2 V19 L7.4 14.9 L10.6 22 L13.9 20.6 L10.7 13.6 L16.8 13.6 Z" fill="'+C[c][1]+'" stroke="'+(c==="preto"?"#ffffff":C[c][2])+'" stroke-width="1.4" stroke-linejoin="round"/></svg>'+C[c][0];
+    l.querySelector("input").addEventListener("change",function(){P.cor=c;ap()});box.appendChild(l)});
+  function ap(){
+    var t=1+P.pont*0.5;
+    pv.style.setProperty("--pfs",P.fonte/16);
+    pv.style.setProperty("--pg",C[P.cor][1]);pv.style.setProperty("--pgc",C[P.cor][2]);
+    st.textContent=(P.pont||P.cor!=="preto")?"#pv-stage,#pv-stage *{cursor:"+seta(t,P.cor)+" !important}":"";
+    ["daltonismo","contraste","dislexia"].forEach(function(k){P[k]?pv.setAttribute("data-"+k,""):pv.removeAttribute("data-"+k)});
+    $("pv-fv").textContent=P.fonte;$("pv-pv").textContent=String(t).replace(".",",")+"×";
+    $("pv-fm").disabled=P.fonte<=12;$("pv-fp").disabled=P.fonte>=24;$("pv-pm").disabled=P.pont<=0;$("pv-pp").disabled=P.pont>=8;
+    pv.querySelectorAll(".pv-sw").forEach(function(b){b.setAttribute("aria-checked",P[b.dataset.k]?"true":"false")});
+    box.querySelectorAll("input").forEach(function(i){i.checked=i.value===P.cor});
+    guia.hidden=!P.guia;
+  }
+  $("pv-fm").onclick=function(){P.fonte=Math.max(12,P.fonte-1);ap()};$("pv-fp").onclick=function(){P.fonte=Math.min(24,P.fonte+1);ap()};
+  $("pv-pm").onclick=function(){P.pont=Math.max(0,P.pont-1);ap()};$("pv-pp").onclick=function(){P.pont=Math.min(8,P.pont+1);ap()};
+  pv.querySelectorAll(".pv-sw").forEach(function(b){b.onclick=function(){P[b.dataset.k]=!P[b.dataset.k];ap()}});
+  $("pv-reset").onclick=function(){P=Object.assign({},PAD);ap()};
+  var y=0,q=0,rm=window.matchMedia("(prefers-reduced-motion: reduce)");
+  function pinta(){q=0;guia.style.transform="translateY("+y+"px)";guia.style.opacity="1"}
+  stage.addEventListener("pointermove",function(e){if(!P.guia)return;y=e.clientY-stage.getBoundingClientRect().top;if(rm.matches)pinta();else if(!q)q=requestAnimationFrame(pinta)},{passive:true});
+  stage.addEventListener("pointerleave",function(){guia.style.opacity="0"});
+  ap();
 })();
 </script>
 </body>
