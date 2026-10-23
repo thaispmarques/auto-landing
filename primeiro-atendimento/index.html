@@ -10,6 +10,8 @@
 <link rel="icon" href="/favicon.ico" sizes="48x48">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://formsubmit.co">
+<link rel="preconnect" href="https://cal.com">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap">
@@ -114,21 +116,24 @@ input[aria-invalid=true]{border-color:var(--crit)}
     if(bad){err.textContent="Corrija os campos destacados.";bad.focus();return}
     if(!f.elements.ok.checked){err.textContent="Marque a confirmação para continuar.";return}
     var v=function(n){return f.elements[n].value.trim()};
-    btn.disabled=true;btn.textContent="Enviando...";
-    fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({
+    btn.disabled=true;
+    var body=JSON.stringify({
       _subject:"Primeiro atendimento: "+v("escritorio"),_template:"table",_captcha:"false",_cc:CC,_honey:"",
-      "Nome":v("nome"),"Telefone":v("telefone"),"E-mail":v("email"),"Escritório":v("escritorio"),"Número de funcionários":v("funcionarios")})})
-    .then(function(r){return r.json().then(function(j){if(!r.ok||j.success==="false"||j.success===false)throw 0})})
-    .then(function(){
-      var ok=document.getElementById("ok");f.hidden=true;ok.hidden=false;
-      if(CAL_LINK){
-        var q="?embed=true&theme=dark&name="+encodeURIComponent(v("nome"))+"&email="+encodeURIComponent(v("email"))+"&notes="+encodeURIComponent("Escritório: "+v("escritorio")+" | Funcionários: "+v("funcionarios")+" | Telefone: "+v("telefone"));
-        document.getElementById("cal-frame").src=CAL_LINK+q;document.getElementById("cal").hidden=false;
-        document.getElementById("ok-msg").textContent="Agora escolha o melhor horário para o seu primeiro atendimento.";
-      }
-      ok.focus();
-    })
-    .catch(function(){btn.innerHTML=LABEL;trava();err.textContent="Não foi possível enviar agora. Tente de novo ou fale conosco pelo WhatsApp."});
+      "Nome":v("nome"),"Telefone":v("telefone"),"E-mail":v("email"),"Escritório":v("escritorio"),"Número de funcionários":v("funcionarios")});
+    // envia em segundo plano (com uma nova tentativa) para a pessoa não esperar o e-mail ser disparado
+    function enviar(n){
+      fetch(ENDPOINT,{method:"POST",keepalive:true,headers:{"Content-Type":"application/json",Accept:"application/json"},body:body})
+      .then(function(r){return r.json().then(function(j){if(!r.ok||j.success==="false"||j.success===false)throw 0})})
+      .catch(function(){if(n<1)setTimeout(function(){enviar(n+1)},2000)});
+    }
+    enviar(0);
+    var ok=document.getElementById("ok");f.hidden=true;ok.hidden=false;
+    if(CAL_LINK){
+      var q="?embed=true&theme=dark&name="+encodeURIComponent(v("nome"))+"&email="+encodeURIComponent(v("email"))+"&notes="+encodeURIComponent("Escritório: "+v("escritorio")+" | Funcionários: "+v("funcionarios")+" | Telefone: "+v("telefone"));
+      document.getElementById("cal-frame").src=CAL_LINK+q;document.getElementById("cal").hidden=false;
+      document.getElementById("ok-msg").textContent="Agora escolha o melhor horário para o seu primeiro atendimento.";
+    }
+    ok.focus();
   });
 })();
 </script>
