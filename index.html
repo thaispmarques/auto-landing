@@ -754,6 +754,19 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
   .panel{background:none;border:0;padding:0;border-radius:0}
   .panel .cap{display:none}
 }
+.wa-fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:max(16px,env(safe-area-inset-bottom,0px));z-index:40;display:inline-flex;align-items:center;gap:10px;min-height:52px;padding:0 22px;border-radius:999px;background:#F2B994;color:#03060E;font:600 calc(16px*var(--fs,1)) var(--f-body);text-decoration:none;box-shadow:0 8px 24px rgba(0,0,0,.4)}
+.wa-fab svg{width:22px;height:22px;flex:none}
+.wa-fab:hover{background:#F6C6A6}
+.wa-fab:focus-visible{outline:3px solid #9CC0EE;outline-offset:3px}
+.a11y-btn{background:#101C33!important;color:#fff!important;border:2px solid #fff!important}
+.a11y-btn:focus-visible{outline:3px solid #F2B994!important;outline-offset:3px}
+@media print{.wa-fab{display:none}}
+@media (max-width:720px){
+  .sticky{display:none!important}
+  .a11y-btn{bottom:max(16px,env(safe-area-inset-bottom,0px))!important}
+  .a11y-panel{bottom:calc(84px + env(safe-area-inset-bottom,0px))!important}
+  .wa-fab{padding:0 18px}
+}
 .acc[hidden]{display:none}
 .acc-more{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 4px;background:transparent;border:0;border-radius:8px;color:var(--fg);font:600 calc(16px*var(--fs,1)) var(--f-body);cursor:pointer;text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--steel)}
 .acc-more:hover{text-decoration-color:currentColor}
@@ -1143,6 +1156,7 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
 <aside class="sticky" aria-label="Contato rápido"><a class="pill solid" data-wa="geral" href="#topo"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.46 15.02L2 22l5.12-1.34A9.9 9.9 0 1 0 12.04 2Zm0 18.1a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.04.8.81-2.96-.2-.31a8.2 8.2 0 1 1 6.91 3.79Zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.09-.39-.12-.56.12-.16.25-.64.8-.78.97-.14.16-.29.18-.54.06a6.7 6.7 0 0 1-3.3-2.88c-.25-.43.25-.4.71-1.32.08-.16.04-.3-.02-.42-.06-.12-.56-1.35-.76-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07s.89 2.4 1.01 2.57c.12.16 1.75 2.67 4.24 3.75 1.58.68 2.2.74 2.99.62.48-.07 1.46-.6 1.67-1.17.2-.58.2-1.07.14-1.17-.06-.1-.23-.16-.48-.29Z"/></svg>Conversar no WhatsApp</a></aside>
 
 <button class="a11y-btn" type="button" id="a11y-btn" aria-haspopup="dialog" aria-expanded="false" aria-label="Abrir opções de acessibilidade"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="4.5" r="1.8"/><path d="M4 8.5l8 1.5 8-1.5M12 10v4.5M12 14.5l-3.5 6M12 14.5l3.5 6"/></svg></button>
+<a class="wa-fab" data-wa="geral" href="#topo"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.46 15.02L2 22l5.12-1.34A9.9 9.9 0 1 0 12.04 2Zm0 18.1a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.04.8.81-2.96-.2-.31a8.2 8.2 0 1 1 6.91 3.79Zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.09-.39-.12-.56.12-.16.25-.64.8-.78.97-.14.16-.29.18-.54.06a6.7 6.7 0 0 1-3.3-2.88c-.25-.43.25-.4.71-1.32.08-.16.04-.3-.02-.42-.06-.12-.56-1.35-.76-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07s.89 2.4 1.01 2.57c.12.16 1.75 2.67 4.24 3.75 1.58.68 2.2.74 2.99.62.48-.07 1.46-.6 1.67-1.17.2-.58.2-1.07.14-1.17-.06-.1-.23-.16-.48-.29Z"/></svg><span>Automatizar meu escritório</span></a>
 <div class="a11y-panel" id="a11y-panel" role="dialog" aria-labelledby="a11y-t" hidden>
   <div class="a11y-top"><h2 id="a11y-t">Acessibilidade</h2><button class="a11y-x" type="button" id="a11y-x" aria-label="Fechar opções de acessibilidade">Fechar</button></div>
   <div class="a11y-grp" role="group" aria-labelledby="a11y-l1"><span class="a11y-lbl" id="a11y-l1">Tamanho da fonte (padrão 16)</span><div class="a11y-step"><button type="button" id="f-menos" aria-label="Diminuir o tamanho da fonte">−</button><output id="f-val" aria-live="polite">16</output><button type="button" id="f-mais" aria-label="Aumentar o tamanho da fonte">+</button></div></div>
