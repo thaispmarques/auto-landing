@@ -12,7 +12,8 @@
   function evento(nome){if(window.fbq&&carregado)window.fbq("track",nome)}
 
   // eventos de conversão
-  document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[data-wa],.wa-fab");if(a)evento("Contact")});
+  // Lead: só quando a pessoa clica em um botão de WhatsApp (não na abertura da página)
+  document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest('a[data-wa],.wa-fab,a[href*="wa.me"],a[href*="api.whatsapp.com"]');if(a)evento("Lead")});
   window.addEventListener("auto-lead",function(){evento("Lead")});
 
   // aviso de cookies
