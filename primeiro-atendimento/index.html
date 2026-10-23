@@ -31,7 +31,9 @@ h1{font:400 clamp(2rem,6vw,2.8rem)/1.1 var(--f-display);margin:0 0 12px}
 form{display:grid;gap:20px}
 label{display:grid;gap:8px;font:600 15px var(--f-body)}
 input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid #6B7C93;background:var(--bg);color:var(--fg);font:400 16px/1.2 var(--f-body)}
-input:focus-visible,button:focus-visible{outline:3px solid #9CC0EE;outline-offset:2px}
+textarea{width:100%;padding:14px 16px;border-radius:12px;border:1px solid #6B7C93;background:var(--bg);color:var(--fg);font:400 16px/1.4 var(--f-body);resize:vertical;min-height:112px}
+textarea[aria-invalid=true]{border-color:var(--crit)}
+input:focus-visible,textarea:focus-visible,button:focus-visible{outline:3px solid #9CC0EE;outline-offset:2px}
 input[aria-invalid=true]{border-color:var(--crit)}
 .fe{color:var(--crit);font-size:14px;font-weight:400}.fe:empty{display:none}
 .row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
@@ -66,6 +68,7 @@ input[aria-invalid=true]{border-color:var(--crit)}
         <label>Nome do escritório<input type="text" name="escritorio" autocomplete="organization" maxlength="100" required aria-describedby="e-escritorio"><span class="fe" id="e-escritorio"></span></label>
         <label>Número de funcionários<input type="text" name="funcionarios" inputmode="numeric" maxlength="4" placeholder="Ex.: 8" required aria-describedby="e-funcionarios"><span class="fe" id="e-funcionarios"></span></label>
       </div>
+      <label>Qual seu maior problema na gestão do seu escritório hoje?<textarea name="problema" rows="4" maxlength="1000" aria-describedby="e-problema"></textarea><span class="fe" id="e-problema"></span></label>
       <label class="ck"><input type="checkbox" name="ok" required><span>Concordo em compartilhar estes dados com a Auto</span></label>
       <p class="err" id="err" role="alert" aria-live="assertive"></p>
       <div><button class="btn" type="submit" disabled>Agendar reunião <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button></div>
@@ -101,8 +104,9 @@ input[aria-invalid=true]{border-color:var(--crit)}
   f.elements.nome.addEventListener("input",function(e){var el=e.target;el.value=el.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ'’.\- ]/g,"").replace(/\s{2,}/g," ").replace(/^\s+/,"")});
   f.elements.escritorio.addEventListener("input",function(e){var el=e.target;el.value=el.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ0-9&.,'’\/\-() ]/g,"").replace(/\s{2,}/g," ").replace(/^\s+/,"")});
   f.elements.funcionarios.addEventListener("input",function(e){e.target.value=e.target.value.replace(/\D/g,"").slice(0,4).replace(/^0+/,"")});
-  var REG={nome:nomeOk,telefone:foneOk,email:emailOk,escritorio:empOk,funcionarios:funcOk};
-  var MSG={nome:"Informe nome e sobrenome, só com letras.",telefone:"Telefone inválido. Use DDD e número, como (11) 91234-5678.",email:"E-mail inválido. Use o formato nome@dominio.com.",escritorio:"Informe o nome do escritório.",funcionarios:"Informe um número de 1 a 9999."};
+  function probOk(v){v=v.trim();return v===""||(v.length>=3&&!/(.)\1{7,}/i.test(v))}
+  var REG={nome:nomeOk,telefone:foneOk,email:emailOk,escritorio:empOk,funcionarios:funcOk,problema:probOk};
+  var MSG={nome:"Informe nome e sobrenome, só com letras.",telefone:"Telefone inválido. Use DDD e número, como (11) 91234-5678.",email:"E-mail inválido. Use o formato nome@dominio.com.",escritorio:"Informe o nome do escritório.",funcionarios:"Informe um número de 1 a 9999.",problema:"Descreva em pelo menos 3 caracteres, ou deixe em branco."};
   function valida(n){var el=f.elements[n],ok=REG[n](el.value),e=document.getElementById("e-"+n);
     el.setAttribute("aria-invalid",ok?"false":"true");e.textContent=ok?"":(el.value.trim()?MSG[n]:"Campo obrigatório.");return ok}
   Object.keys(REG).forEach(function(n){
@@ -119,7 +123,7 @@ input[aria-invalid=true]{border-color:var(--crit)}
     btn.disabled=true;
     var body=JSON.stringify({
       _subject:"Primeiro atendimento: "+v("escritorio"),_template:"table",_captcha:"false",_cc:CC,_honey:"",
-      "Nome":v("nome"),"Telefone":v("telefone"),"E-mail":v("email"),"Escritório":v("escritorio"),"Número de funcionários":v("funcionarios")});
+      "Nome":v("nome"),"Telefone":v("telefone"),"E-mail":v("email"),"Escritório":v("escritorio"),"Número de funcionários":v("funcionarios"),"Maior problema na gestão":v("problema")||"(não informado)"});
     // envia em segundo plano (com uma nova tentativa) para a pessoa não esperar o e-mail ser disparado
     function enviar(n){
       fetch(ENDPOINT,{method:"POST",keepalive:true,headers:{"Content-Type":"application/json",Accept:"application/json"},body:body})
@@ -129,7 +133,7 @@ input[aria-invalid=true]{border-color:var(--crit)}
     enviar(0);
     var ok=document.getElementById("ok");f.hidden=true;ok.hidden=false;
     if(CAL_LINK){
-      var q="?embed=true&theme=dark&name="+encodeURIComponent(v("nome"))+"&email="+encodeURIComponent(v("email"))+"&notes="+encodeURIComponent("Escritório: "+v("escritorio")+" | Funcionários: "+v("funcionarios")+" | Telefone: "+v("telefone"));
+      var q="?embed=true&theme=dark&name="+encodeURIComponent(v("nome"))+"&email="+encodeURIComponent(v("email"))+"&notes="+encodeURIComponent("Escritório: "+v("escritorio")+" | Funcionários: "+v("funcionarios")+" | Telefone: "+v("telefone")+(v("problema")?" | Problema: "+v("problema").slice(0,300):""));
       document.getElementById("cal-frame").src=CAL_LINK+q;document.getElementById("cal").hidden=false;
       document.getElementById("t").textContent="Escolha o melhor horário";
       document.getElementById("lead").textContent="Vamos fazer uma reunião de 30 minutos para entender melhor suas necessidades";
