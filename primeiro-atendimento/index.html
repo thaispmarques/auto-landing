@@ -74,17 +74,14 @@ input[aria-invalid=true]{border-color:var(--crit)}
       <div class="cal" id="cal" hidden><iframe id="cal-frame" title="Agendamento do primeiro atendimento" loading="lazy"></iframe></div>
     </div>
   </div>
-  <p class="foot">Prefere falar agora? <a data-wa href="#">Chame no WhatsApp</a>.</p>
 </main>
 <script>
 (function(){
   var ENDPOINT="https://formsubmit.co/ajax/thaispmarques1@gmail.com",CC="fidelix.bianca@gmail.com,luizasferoli@gmail.com";
   // Cole aqui o link do evento no Cal.com, por exemplo: https://cal.com/seu-usuario/primeiro-atendimento
   var CAL_LINK="https://cal.com/autoplataforma/30min";
-  var WA="5511912536346";
   var LABEL='Continuar agendamento <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
   var f=document.getElementById("f"),err=document.getElementById("err"),btn=f.querySelector("button[type=submit]");
-  document.querySelector("[data-wa]").href="https://wa.me/"+WA+"?text="+encodeURIComponent("Olá! Vi o site da Auto e tenho interesse no produto.");
   function foneMask(v){var d=v.replace(/\D/g,"").slice(0,11);
     if(d.length>10)return d.replace(/(\d{2})(\d{5})(\d{0,4})/,"($1) $2-$3");
     if(d.length>6)return d.replace(/(\d{2})(\d{4})(\d{0,4})/,"($1) $2-$3");
