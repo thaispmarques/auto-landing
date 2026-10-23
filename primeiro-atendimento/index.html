@@ -36,7 +36,7 @@ input[aria-invalid=true]{border-color:var(--crit)}
 @media (max-width:560px){.row{grid-template-columns:minmax(0,1fr)}}
 .ck{display:flex;gap:12px;align-items:flex-start;font-weight:400;color:var(--muted);font-size:14px}
 .ck input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--peach)}
-.btn{display:inline-flex;justify-content:center;align-items:center;min-height:52px;padding:0 28px;border-radius:999px;border:0;background:#ECEAE5;color:#03060E;font:600 16px var(--f-body);cursor:pointer}
+.btn{display:inline-flex;justify-content:center;align-items:center;gap:10px;min-height:52px;padding:0 28px;border-radius:999px;border:0;background:#ECEAE5;color:#03060E;font:600 16px var(--f-body);cursor:pointer}
 .btn:disabled{opacity:.45;cursor:not-allowed}
 .err{color:var(--crit);margin:0;font-size:14px}.err:empty{display:none}
 .ok[hidden],form[hidden]{display:none}
@@ -66,7 +66,7 @@ input[aria-invalid=true]{border-color:var(--crit)}
       </div>
       <label class="ck"><input type="checkbox" name="ok" required><span>Concordo em compartilhar estes dados com a Auto para organizar o primeiro atendimento.</span></label>
       <p class="err" id="err" role="alert" aria-live="assertive"></p>
-      <div><button class="btn" type="submit" disabled>Continuar agendamento</button></div>
+      <div><button class="btn" type="submit" disabled>Continuar agendamento <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button></div>
     </form>
     <div class="ok" id="ok" role="status" tabindex="-1" hidden>
       <h2>Recebemos seus dados!</h2>
@@ -82,6 +82,7 @@ input[aria-invalid=true]{border-color:var(--crit)}
   // Cole aqui o link do evento no Cal.com, por exemplo: https://cal.com/seu-usuario/primeiro-atendimento
   var CAL_LINK="https://cal.com/autoplataforma/30min";
   var WA="5511912536346";
+  var LABEL='Continuar agendamento <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg>';
   var f=document.getElementById("f"),err=document.getElementById("err"),btn=f.querySelector("button[type=submit]");
   document.querySelector("[data-wa]").href="https://wa.me/"+WA+"?text="+encodeURIComponent("Olá! Vi o site da Auto e tenho interesse no produto.");
   function foneMask(v){var d=v.replace(/\D/g,"").slice(0,11);
@@ -130,7 +131,7 @@ input[aria-invalid=true]{border-color:var(--crit)}
       }
       ok.focus();
     })
-    .catch(function(){btn.textContent="Continuar agendamento";trava();err.textContent="Não foi possível enviar agora. Tente de novo ou fale conosco pelo WhatsApp."});
+    .catch(function(){btn.innerHTML=LABEL;trava();err.textContent="Não foi possível enviar agora. Tente de novo ou fale conosco pelo WhatsApp."});
   });
 })();
 </script>
