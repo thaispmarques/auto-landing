@@ -770,6 +770,7 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
   .a11y-panel{bottom:calc(84px + env(safe-area-inset-bottom,0px))!important}
   .wa-fab{padding:0 18px}
 }
+.fck{margin:0;font-size:calc(14px*var(--fs,1));color:var(--band-muted)}
 .acc[hidden]{display:none}
 .acc-more{display:inline-flex;align-items:center;gap:10px;min-height:44px;padding:0 4px;background:transparent;border:0;border-radius:8px;color:var(--fg);font:600 calc(16px*var(--fs,1)) var(--f-body);cursor:pointer;text-decoration:underline;text-underline-offset:5px;text-decoration-color:var(--steel)}
 .acc-more:hover{text-decoration-color:currentColor}
@@ -1150,6 +1151,7 @@ if(_a.contraste)_h.setAttribute("data-contraste","alto");if(_a.dislexia)_h.setAt
       <li><a href="tel:+5511912536346"><i data-lucide="phone"></i><span>(11) 91253-6346</span></a></li>
       <li><a href="mailto:contato@autoplataforma.com.br"><i data-lucide="mail"></i><span>contato@autoplataforma.com.br</span></a></li>
     </ul>
+    <p class="fck"><button type="button" class="ck-link" data-cookies>Preferências de cookies</button></p>
     <div class="fsoc">
       <a class="soc" href="https://www.instagram.com/autoplataforma" target="_blank" rel="noopener" aria-label="Instagram (abre em nova aba)"><i data-lucide="instagram"></i></a>
       <a class="soc" data-wa="geral" href="#topo" aria-label="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2a9.9 9.9 0 0 0-8.46 15.02L2 22l5.12-1.34A9.9 9.9 0 1 0 12.04 2Zm0 18.1a8.2 8.2 0 0 1-4.18-1.14l-.3-.18-3.04.8.81-2.96-.2-.31a8.2 8.2 0 1 1 6.91 3.79Zm4.5-6.14c-.25-.12-1.46-.72-1.69-.8-.23-.09-.39-.12-.56.12-.16.25-.64.8-.78.97-.14.16-.29.18-.54.06a6.7 6.7 0 0 1-3.3-2.88c-.25-.43.25-.4.71-1.32.08-.16.04-.3-.02-.42-.06-.12-.56-1.35-.76-1.85-.2-.48-.41-.42-.56-.43h-.48c-.17 0-.43.06-.66.31-.23.25-.87.85-.87 2.07s.89 2.4 1.01 2.57c.12.16 1.75 2.67 4.24 3.75 1.58.68 2.2.74 2.99.62.48-.07 1.46-.6 1.67-1.17.2-.58.2-1.07.14-1.17-.06-.1-.23-.16-.48-.29Z"/></svg></a>
@@ -1463,7 +1465,7 @@ icons();
       "Quem indica (nome)":v("ind_nome"),"Quem indica (contato)":v("ind_contato"),
       "Indicado (nome)":v("alvo_nome"),"Indicado (contato)":v("alvo_contato"),"Empresa":v("alvo_empresa"),"CNPJ":v("alvo_cnpj")})})
     .then(function(r){return r.json().then(function(j){if(!r.ok||j.success==="false"||j.success===false)throw 0})})
-    .then(function(){var ok=document.getElementById("ind-ok");document.getElementById("ind-card").hidden=true;ok.hidden=false;ok.focus()})
+    .then(function(){var ok=document.getElementById("ind-ok");document.getElementById("ind-card").hidden=true;ok.hidden=false;ok.focus();window.dispatchEvent(new Event("auto-lead"))})
     .catch(function(){trava();btn.textContent="Enviar indicação";err.textContent="Não foi possível enviar agora. Tente de novo ou fale conosco pelo WhatsApp."});
   });
 })();
@@ -1563,5 +1565,6 @@ if(o){t.setAttribute("aria-label","Recolher o formulário de indicação");var i
 if(!("IntersectionObserver" in window)){fab.classList.add("show");return}
 new IntersectionObserver(function(es){fab.classList.toggle("show",!es[0].isIntersecting&&es[0].boundingClientRect.top<0)}).observe(nav);})();
 </script>
+<script src="/js/pixel.js" defer></script>
 </body>
 </html>

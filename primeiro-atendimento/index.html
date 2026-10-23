@@ -130,7 +130,7 @@ input[aria-invalid=true]{border-color:var(--crit)}
       .then(function(r){return r.json().then(function(j){if(!r.ok||j.success==="false"||j.success===false)throw 0})})
       .catch(function(){if(n<1)setTimeout(function(){enviar(n+1)},2000)});
     }
-    enviar(0);
+    enviar(0);window.dispatchEvent(new Event("auto-lead"));
     var ok=document.getElementById("ok");f.hidden=true;ok.hidden=false;
     if(CAL_LINK){
       var q="?embed=true&theme=dark&name="+encodeURIComponent(v("nome"))+"&email="+encodeURIComponent(v("email"))+"&notes="+encodeURIComponent("Escritório: "+v("escritorio")+" | Funcionários: "+v("funcionarios")+" | Telefone: "+v("telefone")+(v("problema")?" | Problema: "+v("problema").slice(0,300):""));
@@ -144,5 +144,6 @@ input[aria-invalid=true]{border-color:var(--crit)}
   });
 })();
 </script>
+<script src="/js/pixel.js" defer></script>
 </body>
 </html>
