@@ -1,0 +1,138 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Primeiro atendimento · Auto</title>
+<meta name="description" content="Agende o primeiro atendimento com a Auto.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#070B14">
+<link rel="icon" href="/favicon.ico" sizes="48x48">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600&family=Outfit:wght@300;400;500;600&display=swap">
+<style>
+:root{--bg:#070B14;--surface:#0E1522;--fg:#ECEAE5;--muted:#9BA8B8;--line:#2B3A52;--peach:#F2B994;--crit:#E5857F;--f-display:"Outfit","Avenir Next",system-ui,sans-serif;--f-body:"Hanken Grotesk","Segoe UI",system-ui,sans-serif}
+*{box-sizing:border-box}
+html{color-scheme:dark}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 17px/1.5 var(--f-body);min-height:100vh}
+a{color:var(--peach)}
+.skip{position:absolute;left:12px;top:-60px;background:#ECEAE5;color:#03060E;padding:12px 18px;border-radius:10px;font-weight:600;text-decoration:none;z-index:10}
+.skip:focus{top:12px}
+.wrap{max-width:640px;margin:0 auto;padding:32px 16px 64px}
+.logo{display:block;width:120px;height:auto;margin:0 0 40px}
+h1{font:400 clamp(2rem,6vw,2.8rem)/1.1 var(--f-display);margin:0 0 12px}
+.lead{color:var(--muted);margin:0 0 32px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:clamp(20px,4vw,32px)}
+form{display:grid;gap:20px}
+label{display:grid;gap:8px;font:600 15px var(--f-body)}
+input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid #6B7C93;background:var(--bg);color:var(--fg);font:400 16px/1.2 var(--f-body)}
+input:focus-visible,button:focus-visible{outline:3px solid #9CC0EE;outline-offset:2px}
+input[aria-invalid=true]{border-color:var(--crit)}
+.fe{color:var(--crit);font-size:14px;font-weight:400}.fe:empty{display:none}
+.row{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
+@media (max-width:560px){.row{grid-template-columns:minmax(0,1fr)}}
+.ck{display:flex;gap:12px;align-items:flex-start;font-weight:400;color:var(--muted);font-size:14px}
+.ck input{width:18px;height:18px;margin-top:3px;flex:none;accent-color:var(--peach)}
+.btn{display:inline-flex;justify-content:center;align-items:center;min-height:52px;padding:0 28px;border-radius:999px;border:0;background:#ECEAE5;color:#03060E;font:600 16px var(--f-body);cursor:pointer}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.err{color:var(--crit);margin:0;font-size:14px}.err:empty{display:none}
+.ok[hidden],form[hidden]{display:none}
+.ok h2{font:500 1.6rem var(--f-display);margin:0 0 8px}.ok p{color:var(--muted);margin:0}
+.cal{margin-top:24px}
+.cal iframe{width:100%;height:720px;border:0;border-radius:12px;background:#fff}
+.foot{margin-top:32px;font-size:14px;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Pular para o conteúdo</a>
+<main class="wrap" id="main">
+  <a href="/" aria-label="Auto, ir para o site"><img class="logo" src="/img/logo-auto.png" alt="Auto" width="120" height="42"></a>
+  <h1>Primeiro atendimento</h1>
+  <p class="lead">Conte um pouco sobre o seu escritório para organizarmos o atendimento.</p>
+  <div class="card">
+    <form id="f" novalidate aria-label="Formulário de primeiro atendimento">
+      <label>Nome<input type="text" name="nome" autocomplete="name" maxlength="80" required aria-describedby="e-nome"><span class="fe" id="e-nome"></span></label>
+      <div class="row">
+        <label>Telefone (com DDD)<input type="tel" name="telefone" inputmode="tel" autocomplete="tel-national" placeholder="(00) 00000-0000" maxlength="15" required aria-describedby="e-telefone"><span class="fe" id="e-telefone"></span></label>
+        <label>E-mail<input type="email" name="email" inputmode="email" autocomplete="email" maxlength="120" required aria-describedby="e-email"><span class="fe" id="e-email"></span></label>
+      </div>
+      <div class="row">
+        <label>Nome do escritório<input type="text" name="escritorio" autocomplete="organization" maxlength="100" required aria-describedby="e-escritorio"><span class="fe" id="e-escritorio"></span></label>
+        <label>Número de funcionários<input type="text" name="funcionarios" inputmode="numeric" maxlength="4" placeholder="Ex.: 8" required aria-describedby="e-funcionarios"><span class="fe" id="e-funcionarios"></span></label>
+      </div>
+      <label class="ck"><input type="checkbox" name="ok" required><span>Concordo em compartilhar estes dados com a Auto para organizar o primeiro atendimento.</span></label>
+      <p class="err" id="err" role="alert" aria-live="assertive"></p>
+      <div><button class="btn" type="submit" disabled>Continuar</button></div>
+    </form>
+    <div class="ok" id="ok" role="status" tabindex="-1" hidden>
+      <h2>Recebemos seus dados!</h2>
+      <p id="ok-msg">Entraremos em contato em breve para combinar o melhor horário.</p>
+      <div class="cal" id="cal" hidden><iframe id="cal-frame" title="Agendamento do primeiro atendimento" loading="lazy"></iframe></div>
+    </div>
+  </div>
+  <p class="foot">Prefere falar agora? <a data-wa href="#">Chame no WhatsApp</a>.</p>
+</main>
+<script>
+(function(){
+  var ENDPOINT="https://formsubmit.co/ajax/thaispmarques1@gmail.com",CC="fidelix.bianca@gmail.com,luizasferoli@gmail.com";
+  // Cole aqui o link do evento no Cal.com, por exemplo: https://cal.com/seu-usuario/primeiro-atendimento
+  var CAL_LINK="";
+  var WA="5511912536346";
+  var f=document.getElementById("f"),err=document.getElementById("err"),btn=f.querySelector("button[type=submit]");
+  document.querySelector("[data-wa]").href="https://wa.me/"+WA+"?text="+encodeURIComponent("Olá! Vi o site da Auto e tenho interesse no produto.");
+  function foneMask(v){var d=v.replace(/\D/g,"").slice(0,11);
+    if(d.length>10)return d.replace(/(\d{2})(\d{5})(\d{0,4})/,"($1) $2-$3");
+    if(d.length>6)return d.replace(/(\d{2})(\d{4})(\d{0,4})/,"($1) $2-$3");
+    if(d.length>2)return d.replace(/(\d{2})(\d{0,5})/,"($1) $2");
+    return d.length?"("+d:""}
+  function foneOk(v){var d=v.replace(/\D/g,"");
+    if(d.length<10||d.length>11)return false;var ddd=+d.slice(0,2);if(ddd<11||ddd>99||/^(\d)\1+$/.test(d.slice(2)))return false;
+    return d.length===11?d[2]==="9":/[2-5]/.test(d[2])}
+  function nomeOk(v){v=v.trim();var p=v.split(/\s+/).filter(function(x){return x.replace(/[^A-Za-zÀ-ÿ]/g,"").length>=2});
+    return p.length>=2&&/^[A-Za-zÀ-ÖØ-öø-ÿ'’.\- ]+$/.test(v)&&!/(.)\1{3,}/i.test(v)}
+  function emailOk(v){v=v.trim();return v.length<=120&&/^[^\s@]+@[^\s@]+\.[A-Za-z]{2,}$/.test(v)&&!/\.\./.test(v)}
+  function empOk(v){v=v.trim();return v.length>=2&&/[A-Za-zÀ-ÿ0-9]/.test(v)&&!/(.)\1{4,}/i.test(v)}
+  function funcOk(v){return /^\d{1,4}$/.test(v)&&+v>=1}
+  f.elements.telefone.addEventListener("input",function(e){e.target.value=foneMask(e.target.value)});
+  f.elements.nome.addEventListener("input",function(e){var el=e.target;el.value=el.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ'’.\- ]/g,"").replace(/\s{2,}/g," ").replace(/^\s+/,"")});
+  f.elements.escritorio.addEventListener("input",function(e){var el=e.target;el.value=el.value.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ0-9&.,'’\/\-() ]/g,"").replace(/\s{2,}/g," ").replace(/^\s+/,"")});
+  f.elements.funcionarios.addEventListener("input",function(e){e.target.value=e.target.value.replace(/\D/g,"").slice(0,4).replace(/^0+/,"")});
+  var REG={nome:nomeOk,telefone:foneOk,email:emailOk,escritorio:empOk,funcionarios:funcOk};
+  var MSG={nome:"Informe nome e sobrenome, só com letras.",telefone:"Telefone inválido. Use DDD e número, como (11) 91234-5678.",email:"E-mail inválido. Use o formato nome@dominio.com.",escritorio:"Informe o nome do escritório.",funcionarios:"Informe um número de 1 a 9999."};
+  function valida(n){var el=f.elements[n],ok=REG[n](el.value),e=document.getElementById("e-"+n);
+    el.setAttribute("aria-invalid",ok?"false":"true");e.textContent=ok?"":(el.value.trim()?MSG[n]:"Campo obrigatório.");return ok}
+  Object.keys(REG).forEach(function(n){
+    f.elements[n].addEventListener("blur",function(){if(f.elements[n].value)valida(n)});
+    f.elements[n].addEventListener("input",function(){if(f.elements[n].getAttribute("aria-invalid")==="true")valida(n)})});
+  function trava(){btn.disabled=!f.elements.ok.checked}
+  f.elements.ok.addEventListener("change",function(){trava();if(f.elements.ok.checked)err.textContent=""});trava();
+  f.addEventListener("submit",function(e){
+    e.preventDefault();err.textContent="";
+    var bad=null;Object.keys(REG).forEach(function(n){if(!valida(n)&&!bad)bad=f.elements[n]});
+    if(bad){err.textContent="Corrija os campos destacados.";bad.focus();return}
+    if(!f.elements.ok.checked){err.textContent="Marque a confirmação para continuar.";return}
+    var v=function(n){return f.elements[n].value.trim()};
+    btn.disabled=true;btn.textContent="Enviando...";
+    fetch(ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json",Accept:"application/json"},body:JSON.stringify({
+      _subject:"Primeiro atendimento: "+v("escritorio"),_template:"table",_captcha:"false",_cc:CC,_honey:"",
+      "Nome":v("nome"),"Telefone":v("telefone"),"E-mail":v("email"),"Escritório":v("escritorio"),"Número de funcionários":v("funcionarios")})})
+    .then(function(r){return r.json().then(function(j){if(!r.ok||j.success==="false"||j.success===false)throw 0})})
+    .then(function(){
+      var ok=document.getElementById("ok");f.hidden=true;ok.hidden=false;
+      if(CAL_LINK){
+        var q="?embed=true&theme=dark&name="+encodeURIComponent(v("nome"))+"&email="+encodeURIComponent(v("email"))+"&notes="+encodeURIComponent("Escritório: "+v("escritorio")+" | Funcionários: "+v("funcionarios")+" | Telefone: "+v("telefone"));
+        document.getElementById("cal-frame").src=CAL_LINK+q;document.getElementById("cal").hidden=false;
+        document.getElementById("ok-msg").textContent="Agora escolha o melhor horário para o seu primeiro atendimento.";
+      }
+      ok.focus();
+    })
+    .catch(function(){btn.textContent="Continuar";trava();err.textContent="Não foi possível enviar agora. Tente de novo ou fale conosco pelo WhatsApp."});
+  });
+})();
+</script>
+</body>
+</html>
