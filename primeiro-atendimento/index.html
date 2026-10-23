@@ -53,8 +53,8 @@ input[aria-invalid=true]{border-color:var(--crit)}
 <a class="skip" href="#main">Pular para o conteúdo</a>
 <main class="wrap" id="main">
   <a href="/" aria-label="Auto, ir para o site"><img class="logo" src="/img/logo-auto.png" alt="Auto" width="120" height="42"></a>
-  <h1>Primeiro atendimento</h1>
-  <p class="lead">Conte um pouco sobre o seu escritório para organizarmos o atendimento.</p>
+  <h1 id="t">Primeiro atendimento</h1>
+  <p class="lead" id="lead">Conte um pouco sobre o seu escritório para organizarmos o atendimento.</p>
   <div class="card">
     <form id="f" novalidate aria-label="Formulário de primeiro atendimento">
       <label>Nome<input type="text" name="nome" autocomplete="name" maxlength="80" required aria-describedby="e-nome"><span class="fe" id="e-nome"></span></label>
@@ -71,7 +71,7 @@ input[aria-invalid=true]{border-color:var(--crit)}
       <div><button class="btn" type="submit" disabled>Agendar reunião <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></button></div>
     </form>
     <div class="ok" id="ok" role="status" tabindex="-1" hidden>
-      <h2>Recebemos seus dados!</h2>
+      <h2 id="ok-h">Recebemos seus dados!</h2>
       <p id="ok-msg">Entraremos em contato em breve para combinar o melhor horário.</p>
       <div class="cal" id="cal" hidden><iframe id="cal-frame" title="Agendamento do primeiro atendimento" loading="lazy"></iframe></div>
     </div>
@@ -131,7 +131,10 @@ input[aria-invalid=true]{border-color:var(--crit)}
     if(CAL_LINK){
       var q="?embed=true&theme=dark&name="+encodeURIComponent(v("nome"))+"&email="+encodeURIComponent(v("email"))+"&notes="+encodeURIComponent("Escritório: "+v("escritorio")+" | Funcionários: "+v("funcionarios")+" | Telefone: "+v("telefone"));
       document.getElementById("cal-frame").src=CAL_LINK+q;document.getElementById("cal").hidden=false;
-      document.getElementById("ok-msg").textContent="Agora escolha o melhor horário para o seu primeiro atendimento.";
+      document.getElementById("t").textContent="Escolha o melhor horário";
+      document.getElementById("lead").textContent="Vamos fazer uma reunião de 30 minutos para entender melhor suas necessidades";
+      document.getElementById("ok-h").hidden=true;document.getElementById("ok-msg").hidden=true;
+      document.title="Escolha o melhor horário · Auto";
     }
     ok.focus();
   });
