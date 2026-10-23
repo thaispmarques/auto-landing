@@ -66,7 +66,7 @@ input[aria-invalid=true]{border-color:var(--crit)}
       </div>
       <label class="ck"><input type="checkbox" name="ok" required><span>Concordo em compartilhar estes dados com a Auto para organizar o primeiro atendimento.</span></label>
       <p class="err" id="err" role="alert" aria-live="assertive"></p>
-      <div><button class="btn" type="submit" disabled>Continuar</button></div>
+      <div><button class="btn" type="submit" disabled>Continuar agendamento</button></div>
     </form>
     <div class="ok" id="ok" role="status" tabindex="-1" hidden>
       <h2>Recebemos seus dados!</h2>
@@ -130,7 +130,7 @@ input[aria-invalid=true]{border-color:var(--crit)}
       }
       ok.focus();
     })
-    .catch(function(){btn.textContent="Continuar";trava();err.textContent="Não foi possível enviar agora. Tente de novo ou fale conosco pelo WhatsApp."});
+    .catch(function(){btn.textContent="Continuar agendamento";trava();err.textContent="Não foi possível enviar agora. Tente de novo ou fale conosco pelo WhatsApp."});
   });
 })();
 </script>
